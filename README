@@ -1,0 +1,11 @@
+## Data Source Acknowledgment
+
+This project utilizes the `emoji.csv` dataset from the GitHub repository [emojis](https://github.com/datasets/emojis/tree/main). The dataset is made available under the **Public Domain Dedication and License (PDDL)**.
+
+And, this project utilizes the `kMandarin_8105.txt` dataset from the GitHub repository [mozillazg/pinyin-data](https://github.com/mozillazg/pinyin-data). The dataset is made available under the terms of the **MIT License**.
+
+Finally, we all heavily rely on the Unicode Consortium for providing us with the Unicode character database ([UCD](https://www.unicode.org/Public/UCD/latest/)).
+
+The Card flip related CSS code is developed based on the demo by Matthew Nance on [CodePen](https://codepen.io/mn8809/pen/OPmYxy).
+
+I want to express my gratitude to the three authors for providing valuable resource of Unicode data.

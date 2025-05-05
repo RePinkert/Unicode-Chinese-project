@@ -1,0 +1,366 @@
+/* natural box model */
+html {
+  box-sizing: border-box;
+  font-family: "Victor Mono", monospace;
+  background:linear-gradient(-93deg, #f8b58b3a, #3F66CA3a);
+}
+
+*,
+*:before,
+*:after {
+  box-sizing: inherit;
+}
+
+/* UTILITIES */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  border: 0;
+}
+
+.nobr {
+  white-space: nowrap;
+}
+
+/* START STYLES HERE */
+:root {
+  --primary-color: #2c3e50;
+  --secondary-color: #1772B4;
+  /* 群青 */
+}
+
+@font-face {
+  font-family: '仓耳今楷05-W01';
+  src: url('../font/仓耳今楷05-W01.ttf') format('truetype');
+}
+
+.victor-mono {
+  font-family: "Victor Mono", monospace;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+}
+
+body {
+  margin: 0 auto;
+}
+
+nav {
+  margin-bottom: 32px;
+  padding: 16px;
+  background: linear-gradient(89deg, #f8b58b3a, #3F66CA3a);
+  width: auto;
+  padding: 16px;
+}
+
+nav a {
+  margin-right: 16px;
+  color: var(--primary-color);
+  text-decoration: none;
+  transition: color 0.3s;
+}
+
+nav a:hover {
+  color: var(--secondary-color);
+  text-decoration: underline;
+}
+
+#app {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 0 auto;
+
+}
+
+/* Card flip styles */
+/* filp card from https://codepen.io/mn8809/pen/OPmYxy modified*/
+.card-view,
+.card,
+.face {
+  width: 400px;
+  min-height: 400px;
+  height: auto;
+}
+
+.card-view {
+  margin: 20px auto;
+  perspective: 1000px;
+  margin: 20px auto;
+}
+
+.card {
+  position: relative;
+  transform-style: preserve-3d;
+  transition: transform 0.6s;
+  cursor: pointer;
+}
+
+.buttons-container {
+  display: flex;
+  flex-direction: row;
+}
+
+.face {
+  position: absolute;
+  width: 100%;
+  min-height: inherit;
+  backface-visibility: hidden;
+  /*pointer-events: none;*/
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.front-face {
+  background: #fff;
+  transform: rotateY(0deg);
+}
+
+.back-face {
+  background: #f0f0f0;
+  transform: rotateY(180deg);
+}
+
+#toggle:checked~#home .card {
+  transform: rotateY(180deg);
+}
+
+.card-view:hover .card {
+  transform: none;
+}
+
+#toggle:checked~.content .card {
+  transform: rotateY(180deg);
+}
+
+#toggle:checked~.card-view>.card:hover {
+  transform: rotateY(180deg);
+}
+
+#toggle-label {
+  width: 150px;
+  height: 40px;
+  line-height: 40px;
+  padding: 0 10px;
+  background: var(--secondary-color);
+  cursor: pointer;
+  display: block;
+  text-align: center;
+  color: white;
+  margin: 20px auto;
+  border-radius: 4px;
+  transition: all 0.3s;
+}
+
+#toggle:checked+#toggle-label {
+  background: #27ae60;
+  /*for test purpose only, hidden by the sr-only*/
+}
+
+/* Character display */
+
+.character {
+  font-size: 96px;
+  margin: 16px 0;
+  font-family: '仓耳今楷05-W01', sans-serif;
+}
+
+/* Card front content and back content */
+#details, #emojiDetails {
+  margin-top: 16px;
+  text-align: left;
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+/* Buttons */
+button {
+  background: var(--secondary-color);
+  color: white;
+  padding: 8px 16px;
+  border-radius: 4px;
+  margin-top: 8px;
+  cursor: pointer;
+  transition: background 0.3s;
+  /* should be displayed on the top of the card */
+  z-index: 10
+}
+
+button:hover {
+  background: #0c5a8e;
+}
+
+button:active {
+  background: #072031;
+  color: white;
+}
+
+footer {
+  background-color: rgba(158, 158, 158, 0.31415);
+}
+
+.emoji-mode {
+  position: fixed;
+  top: 16px;
+  right: 16px;/* should be displayed above the card */
+  z-index: 10;
+}
+
+.blocks-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  padding: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+  justify-content: center;
+}
+
+.hanzi-block {
+  width: 130px;
+  height: 130px;
+  flex: none;
+  border: 2px solid var(--secondary-color);
+  border-radius: 8px;
+  padding: 12px;
+  text-align: center;
+  background: white;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+.hanzi-block:hover {
+  background-color: rgba(255, 255, 255, 0.288);
+}
+.hanzi-char {
+  font-size: 2em;
+  font-family: '仓耳今楷05-W01', sans-serif;
+  margin-bottom: 8px;
+}
+h
+
+.codepoint {
+  font-family: "Victor Mono", monospace;
+  color: var(--secondary-color);
+  font-size: 0.9em;
+  word-break: break-all;
+}
+
+/* card for project-description.html */
+.description-container {
+  height: 91vh;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 16px;
+  display: flex;
+  flex-direction: row;
+  gap: 36px;
+  justify-content: flex-start;
+  flex-wrap: wrap;
+}
+
+.description {
+  flex: 1 1 calc(50% - 18px);
+  max-width: calc(50% - 18px);
+  height: auto;
+  min-width: 300px;
+  max-height: 400px;
+  padding: 15px;
+  box-sizing: border-box;
+  background: linear-gradient(-6deg, #e5419e11, #66738E11);
+  border-radius: 20px;
+}
+.description h2 {
+  font-size: 32px;
+}
+.description li {
+  font-size: 20px;
+}
+
+/* search bar for blocks.html */
+.data-type-tab {
+  margin: 20px;
+  text-align: center;
+}
+
+.tab-button {
+  padding: 10px 20px;
+  margin: 0 10px;
+  cursor: pointer;
+  background: #1772B4;
+  color: white;
+  border: none;
+  border-radius: 4px;
+}
+
+
+@media (max-width: 800px) {
+
+  .card-view,
+  .card {
+    width: 300px;
+    min-height: auto;
+  }
+
+  .character {
+    font-size: 80px;
+  }
+
+  .buttons-container {
+    display: flex;
+    flex-direction: column;
+  }
+
+  #emojiDetails {
+    font-size: 14px;
+  }
+
+  #details {
+    font-size: 14px;
+  }
+
+  .description-container {
+    flex-direction: column;
+    justify-content:flex-start;
+  }
+
+  .description {
+    flex: none;
+    width: 100%;
+    min-width: unset;
+    max-width: 100%;
+  }
+  .description h2 {
+    font-size: 24px;
+  }
+  .description li {
+    font-size: 14px;
+  }
+
+  nav {
+    padding: 12px;
+  }
+
+  nav a {
+    margin-right: 8px;
+    margin-bottom: 16px;
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 1020px) {
+  .description h2 {
+    font-size: 28px;
+  }
+  .description li {
+    font-size: 17px;
+  }
+}

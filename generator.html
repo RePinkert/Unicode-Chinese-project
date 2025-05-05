@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<!--
+    I360 Web Design Template
+-->
+
+<head>
+    <meta charset="Unicode">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Chinese Unicode Learner</title>
+    <!-- resets browser defaults -->
+    <link rel="stylesheet" type="text/css" href="css/normalize.css">
+    <link rel="stylesheet" type="text/css" href="css/styles.css">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Victor+Mono:wght@100..700&display=swap" rel="stylesheet">
+
+</head>
+
+<body>
+    <nav>
+        <a href="project-description.html">Unicode & Hanzi</a>
+        <a href="generator.html">Generater</a>
+        <a href="blocks.html">Unicode Blocks</a>
+        <a href="resource.html">Resources</a>
+    </nav>
+
+    <div id="app">
+        <input type="checkbox" id="toggle" class="sr-only">
+        <label id="toggle-label" for="toggle">Toggle Emoji</label>
+        <div id="characters" class="content" style="min-height: 75vh;">
+            <div class="card-view">
+                <div class="card">
+                    <!-- front：汉字 -->
+                    <div class="face front-face">
+                        <div class="character" id="mainChar" style="border-bottom: 2px dotted var(--secondary-color);">爱</div>
+                        <div id="details">
+                            <p>Unicode: <span id="codepoint">U+7231</span></p>
+                            <p>Pinyin: <span id="pinyin">ài</span></p>
+                        </div>
+                        <div class="buttons-container">
+                        <button onclick="copyChar()">Copy</button>
+                        <button onclick="generateNew()">Re-generate</button>
+                        </div>
+                    </div>
+                    <!-- back：Emoji -->
+                    <div class="face back-face">
+                        <h3>Emoji Mode</h3>
+                        <div class="character" id="emojiChar">♥</div>
+                        <div id="emojiDetails">
+                            <p>Codepoint: <span id="emojiCodepoint">U+2665</span></p>
+                            <p>Name: <span id="emojiName">heart suit</span></p>
+                            <p>Category: <span id="emojiGroup">Activities</span></p>
+                        </div>
+                        <div class="buttons-container">
+                        <button onclick="copyEmoji()">Copy Emoji</button>
+                        <button onclick="generateNew()">Re-generate</button>
+                    </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="blocks">
+            <h2>Examples of used Unicode blocks of this project</h2>
+            <div class="blocks-container" id="hanziBlocks"></div>
+
+        </div>
+    </div>
+    <footer>Copyright © 2025 Xiaopeng Ren, Licensed under the MIT License.</footer>
+    <script>
+        let refreshCount = 0;
+        let emojiMode = false;
+        //const HANZI_RANGE = [0x4E00, 0x9FFF]; abandoned
+        let kMandarinData = [];
+        let emojiItems = [];
+
+        // Load emoji data from emoji.csv (from https://github.com/datasets/emojis/tree/main)
+        async function loadEmojis() {
+            return new Promise(resolve => {
+                fetch('data/emojis.csv')
+                    .then(response => response.text())
+                    .then(text => {
+                        const lines = text.trim().split('\n');
+                        emojiItems = lines.slice(1)
+                            .filter(line => line.trim())
+                            .map(line => {
+                                const parts = line.split(',').map(part => part.trim());
+                                return {
+                                    group: parts[0],
+                                    subgroup: parts[1],
+                                    codePoint: parts[2],
+                                    status: parts[3],
+                                    representation: parts[4],//the emoji unicode character
+                                    name: parts[5],
+                                    section: parts[6]
+                                };
+                            })
+                            .filter(item => item !== null);
+                        resolve();
+                    })
+            });
+        }
+        // Load mandarin data from kMandarin_8105.txt (from https://github.com/mozillazg/pinyin-data)
+        async function loadMandarinData() {
+            return new Promise(resolve => {
+                fetch('data/kMandarin_8105.txt')
+                    .then(response => response.text())
+                    .then(text => {
+                        kMandarinData = text.split('\n')
+                            .filter(line => line.trim() && !line.startsWith('#'))
+                            .map(line => {
+                                const parts = line.split(':');
+                                if (parts.length < 2) return null;
+                                const codePointPart = parts[0].trim();
+                                const codePoint = parseInt(codePointPart.substring(2), 16);
+                                const pinyinPart = parts[1].trim();
+                                const pinyin = pinyinPart.split('#')[0].trim();
+                                return {
+                                    codePoint: codePoint,
+                                    pinyin: pinyin,
+                                };
+                            })
+                            .filter(item => item !== null); // Remove invalid entries
+                        resolve();
+                    })
+            });
+        }
+        function generateHanziBlocks() {
+            //Method to generate the hanzi blocks
+            const container = document.getElementById('hanziBlocks');
+            if (!kMandarinData || !container) return;
+
+            container.innerHTML = '';
+            const sampleSize = Math.min(kMandarinData.length, 1000);
+            const shuffled = [...kMandarinData].sort(() => 0.5 - Math.random());
+            const sample = shuffled.slice(0, sampleSize);
+            sample.forEach(item => {
+                const block = document.createElement('div');
+                block.className = 'hanzi-block';
+                
+                const charSpan = document.createElement('div');
+                charSpan.className = 'hanzi-char';
+                charSpan.textContent = String.fromCodePoint(item.codePoint);
+                
+                const codeSpan = document.createElement('div');
+                codeSpan.className = 'codepoint';
+                codeSpan.textContent = `U+${item.codePoint.toString(16).toUpperCase()}`;
+                
+                block.appendChild(charSpan);
+                block.appendChild(codeSpan);
+                container.appendChild(block);
+            });
+        }
+
+        async function init() {
+            await loadEmojis();
+            await loadMandarinData();
+            //console.log("Emoji items loaded:", emojiItems); //debug
+            document.getElementById('toggle').addEventListener('change', function () {
+                //generateNew(); is abandoned for keep the characters consistent.
+            });
+            generateHanziBlocks(); 
+        }
+
+        function generateNew() {
+            emojiMode = document.getElementById('toggle').checked;
+            refreshCount++;
+            checkBreakNotice();
+
+            let char, info;
+            if (emojiMode) {
+                const randomIndex = Math.floor(Math.random() * emojiItems.length);
+                const selectedEmoji = emojiItems[randomIndex];
+                if (!selectedEmoji) return;
+                document.getElementById('emojiChar').textContent = selectedEmoji.representation;
+                const codePoints = selectedEmoji.codePoint?.split(' ');
+                const formattedCodePoints = [`U+${codePoints[0].toUpperCase()}`].concat(codePoints.slice(1).map(cp => cp.toUpperCase())); //to avoid case like "U+xxxxx U+xxxxx U+xxxxx U+xxxxx"
+                emojiCodepoint.textContent = formattedCodePoints.join(' ');
+                document.getElementById('emojiName').textContent = selectedEmoji.name?.trim();
+                const groupInfo = [selectedEmoji.group].join(' ');
+                document.getElementById('emojiGroup').textContent = groupInfo;
+            } else if (kMandarinData) {
+                const randomHanzi = kMandarinData[Math.floor(Math.random() * kMandarinData.length)];
+                char = String.fromCodePoint(randomHanzi.codePoint);
+                info = {
+                    type: 'hanzi',
+                    codepoint: `U+${randomHanzi.codePoint.toString(16).toUpperCase()}`,
+                    pinyin: randomHanzi.pinyin,
+                    meaning: randomHanzi.meaning
+                };
+                document.getElementById('mainChar').textContent = char;
+                document.getElementById('codepoint').textContent = info.codepoint;
+                document.getElementById('pinyin').textContent = info.pinyin;
+
+            }
+        }
+
+        function copyChar() {
+            const char = document.getElementById('mainChar').textContent;
+            navigator.clipboard.writeText(char)
+                .then(() => alert(`Copied: ${char}`))
+                .catch(err => console.error('Failed to copy:', err));
+        }
+        function copyEmoji() {
+            const emoji = document.getElementById('emojiChar').textContent;
+            navigator.clipboard.writeText(emoji)
+                .then(() => alert(`Copied: ${emoji}`))
+                .catch(err => console.error('Failed to copy:', err));
+        }
+        function toggleEmojiMode() {
+            emojiMode = document.getElementById('toggle').checked;
+            //generateNew();
+            //this was designed for mode switching, but it's abandoned and just for status check.
+        }
+        function checkBreakNotice() {
+            //this should be more randomized
+            if (refreshCount > 0 && refreshCount % 50 === 0 && !emojiMode) {
+                setTimeout(() => {
+                    if (confirm("Remember! Unicode contains a lot. Try to explore the other side.")) {
+                        document.getElementById('toggle').checked = true;
+                        toggleEmojiMode();
+                    }
+                }, 300);
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', init);
+    </script>
+</body>
+
+</html>

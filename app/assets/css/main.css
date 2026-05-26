@@ -372,13 +372,19 @@ h
   }
 }
 
-/* Dark mode styles */
+/* Dark mode styles - .dark-mode is on html element */
+.dark-mode {
+  background: linear-gradient(-93deg, #1a1a2e3a, #16213e3a);
+  color: #e0e0e0;
+}
+
 .dark-mode body {
   background: linear-gradient(-93deg, #1a1a2e3a, #16213e3a);
   color: #e0e0e0;
 }
 
-.dark-mode nav {
+.dark-mode nav,
+.dark-mode .nav {
   background: linear-gradient(89deg, #1a1a2e3a, #16213e3a);
 }
 
@@ -388,8 +394,9 @@ h
   color: #e0e0e0;
 }
 
-.dark-mode .hanzi-block:hover {
-  background-color: rgba(42, 42, 58, 0.8);
+.dark-mode .hanzi-block:hover,
+.dark-mode .hanzi-block.visible:hover {
+  background-color: #3a3a4a;
 }
 
 .dark-mode .codepoint {
@@ -406,16 +413,52 @@ h
   color: #e0e0e0;
 }
 
+.dark-mode .character {
+  color: #e0e0e0;
+}
+
+.dark-mode .details,
+.dark-mode #details,
+.dark-mode #emojiDetails {
+  color: #e0e0e0;
+}
+
 .dark-mode .description {
   background: linear-gradient(-6deg, #e5419e22, #66738E22);
+  color: #e0e0e0;
+}
+
+.dark-mode .description h2,
+.dark-mode .description li {
+  color: #e0e0e0;
+}
+
+.dark-mode h1,
+.dark-mode h2,
+.dark-mode h3,
+.dark-mode p {
+  color: #e0e0e0;
+}
+
+.dark-mode a {
+  color: #4a9eff;
 }
 
 .dark-mode footer {
   background-color: rgba(26, 26, 46, 0.5);
+  color: #e0e0e0;
 }
 
 .dark-mode .tab-button {
   background: #4a9eff;
+}
+
+.dark-mode button {
+  background: #4a9eff;
+}
+
+.dark-mode button:hover {
+  background: #3a8adf;
 }
 
 .dark-mode .color-mode-toggle {
@@ -424,4 +467,10 @@ h
 
 .dark-mode .color-mode-toggle:hover {
   background: #4a9eff;
+}
+
+.dark-mode .search-input {
+  background: #2a2a3a;
+  border-color: #4a9eff;
+  color: #e0e0e0;
 }

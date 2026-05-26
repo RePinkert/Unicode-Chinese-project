@@ -1,12 +1,8 @@
 <template>
-  <div class="blocks-container">
+  <div ref="containerRef" class="blocks-container">
     <div
-      v-for="(item, index) in items"
+      v-for="item in items"
       :key="item.codePoint"
-      v-motion
-      :initial="{ opacity: 0, y: 30, scale: 0.9 }"
-      :visible="{ opacity: 1, y: 0, scale: 1, transition: { delay: index * 30, duration: 400, ease: 'easeOut' } }"
-      :hovered="{ scale: 1.05, transition: { duration: 200 } }"
       class="hanzi-block"
     >
       <div class="hanzi-char">
@@ -28,6 +24,7 @@ interface Props {
 }
 
 const props = defineProps<Props>()
+const containerRef = ref<HTMLElement>()
 
 const getCharacter = (item: EmojiItem | MandarinItem): string => {
   if (props.type === 'emoji') {
@@ -46,6 +43,26 @@ const getCodepoint = (item: EmojiItem | MandarinItem): string => {
   const hanzi = item as MandarinItem
   return `U+${hanzi.codePoint.toString(16).toUpperCase().padStart(4, '0')}`
 }
+
+onMounted(() => {
+  if (!containerRef.value) return
+  
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible')
+        }
+      })
+    },
+    { threshold: 0.1, rootMargin: '50px' }
+  )
+
+  const blocks = containerRef.value.querySelectorAll('.hanzi-block')
+  blocks.forEach((block) => observer.observe(block))
+
+  onUnmounted(() => observer.disconnect())
+})
 </script>
 
 <style scoped>
@@ -70,9 +87,22 @@ const getCodepoint = (item: EmojiItem | MandarinItem): string => {
   background: white;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   cursor: pointer;
+  
+  /* 初始状态 */
+  opacity: 0;
+  transform: translateY(20px) scale(0.95);
+  transition: opacity 0.2s ease, transform 0.2s ease, box-shadow 0.15s ease;
 }
 
-.hanzi-block:hover {
+/* 可见状态 - 一旦添加就不会移除 */
+.hanzi-block.visible {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+/* hover 效果 - 快速响应 */
+.hanzi-block.visible:hover {
+  transform: scale(1.05);
   box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
 }
 

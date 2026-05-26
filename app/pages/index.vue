@@ -92,6 +92,7 @@ const copyEmoji = async () => {
 }
 
 watch(isEmojiMode, () => {
+  flipCard.value?.toggle()
   generateNew()
 })
 </script>

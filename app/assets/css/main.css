@@ -371,3 +371,57 @@ h
     font-size: 17px;
   }
 }
+
+/* Dark mode styles */
+.dark-mode body {
+  background: linear-gradient(-93deg, #1a1a2e3a, #16213e3a);
+  color: #e0e0e0;
+}
+
+.dark-mode nav {
+  background: linear-gradient(89deg, #1a1a2e3a, #16213e3a);
+}
+
+.dark-mode .hanzi-block {
+  background: #2a2a3a;
+  border-color: #4a9eff;
+  color: #e0e0e0;
+}
+
+.dark-mode .hanzi-block:hover {
+  background-color: rgba(42, 42, 58, 0.8);
+}
+
+.dark-mode .codepoint {
+  color: #4a9eff;
+}
+
+.dark-mode .front-face {
+  background: #2a2a3a;
+  color: #e0e0e0;
+}
+
+.dark-mode .back-face {
+  background: #1a1a2e;
+  color: #e0e0e0;
+}
+
+.dark-mode .description {
+  background: linear-gradient(-6deg, #e5419e22, #66738E22);
+}
+
+.dark-mode footer {
+  background-color: rgba(26, 26, 46, 0.5);
+}
+
+.dark-mode .tab-button {
+  background: #4a9eff;
+}
+
+.dark-mode .color-mode-toggle {
+  border-color: #4a9eff;
+}
+
+.dark-mode .color-mode-toggle:hover {
+  background: #4a9eff;
+}

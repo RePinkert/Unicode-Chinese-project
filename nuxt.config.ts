@@ -2,9 +2,16 @@
 export default defineNuxtConfig({
   compatibilityDate: '2025-07-15',
   devtools: { enabled: true },
-  modules: ['@vueuse/motion'],
+  modules: ['@vueuse/motion', '@nuxtjs/color-mode'],
+  
+  colorMode: {
+    preference: 'system',
+    fallback: 'light',
+    classSuffix: '-mode'
+  },
   
   app: {
+    pageTransition: { name: 'page', mode: 'out-in' },
     head: {
       title: 'Unicode Chinese Project',
       meta: [

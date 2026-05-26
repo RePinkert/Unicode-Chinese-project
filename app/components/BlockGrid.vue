@@ -25,6 +25,7 @@ interface Props {
 
 const props = defineProps<Props>()
 const containerRef = ref<HTMLElement>()
+let observer: IntersectionObserver | null = null
 
 const getCharacter = (item: EmojiItem | MandarinItem): string => {
   if (props.type === 'emoji') {
@@ -44,24 +45,41 @@ const getCodepoint = (item: EmojiItem | MandarinItem): string => {
   return `U+${hanzi.codePoint.toString(16).toUpperCase().padStart(4, '0')}`
 }
 
-onMounted(() => {
+const setupObserver = () => {
   if (!containerRef.value) return
   
-  const observer = new IntersectionObserver(
+  // 断开旧的 observer
+  if (observer) observer.disconnect()
+  
+  observer = new IntersectionObserver(
     (entries) => {
       entries.forEach((entry) => {
         if (entry.isIntersecting) {
           entry.target.classList.add('visible')
+          observer?.unobserve(entry.target) // 只触发一次
         }
       })
     },
     { threshold: 0.1, rootMargin: '50px' }
   )
 
-  const blocks = containerRef.value.querySelectorAll('.hanzi-block')
-  blocks.forEach((block) => observer.observe(block))
+  const blocks = containerRef.value.querySelectorAll('.hanzi-block:not(.visible)')
+  blocks.forEach((block) => observer!.observe(block))
+}
 
-  onUnmounted(() => observer.disconnect())
+onMounted(() => {
+  setupObserver()
+})
+
+// 监听 items 变化，重新观察新元素
+watch(() => props.items, () => {
+  nextTick(() => {
+    setupObserver()
+  })
+}, { deep: true })
+
+onUnmounted(() => {
+  if (observer) observer.disconnect()
 })
 </script>
 
@@ -91,7 +109,7 @@ onMounted(() => {
   /* 初始状态 */
   opacity: 0;
   transform: translateY(20px) scale(0.95);
-  transition: opacity 0.2s ease, transform 0.2s ease, box-shadow 0.15s ease;
+  transition: opacity 0.3s ease, transform 0.3s ease, box-shadow 0.15s ease;
 }
 
 /* 可见状态 - 一旦添加就不会移除 */

@@ -1,8 +1,12 @@
 <template>
   <div class="blocks-container">
     <div
-      v-for="item in items"
+      v-for="(item, index) in items"
       :key="item.codePoint"
+      v-motion
+      :initial="{ opacity: 0, y: 30, scale: 0.9 }"
+      :visible="{ opacity: 1, y: 0, scale: 1, transition: { delay: index * 30, duration: 400, ease: 'easeOut' } }"
+      :hovered="{ scale: 1.05, transition: { duration: 200 } }"
       class="hanzi-block"
     >
       <div class="hanzi-char">
@@ -65,11 +69,11 @@ const getCodepoint = (item: EmojiItem | MandarinItem): string => {
   text-align: center;
   background: white;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  transition: background-color 0.3s;
+  cursor: pointer;
 }
 
 .hanzi-block:hover {
-  background-color: rgba(255, 255, 255, 0.288);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
 }
 
 .hanzi-char {

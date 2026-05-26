@@ -1,39 +1,40 @@
 <template>
   <div class="generator-page">
-    <div class="toggle-container">
-      <input type="checkbox" id="toggle" class="sr-only" v-model="isEmojiMode" />
-      <label id="toggle-label" for="toggle">Toggle Emoji</label>
+    <input type="checkbox" id="toggle" class="sr-only" v-model="isEmojiMode" />
+    <label id="toggle-label" for="toggle">Toggle Emoji</label>
+
+    <div class="content">
+      <div class="card-view">
+        <div class="card">
+          <div class="face front-face">
+            <div class="character" style="border-bottom: 2px dotted var(--secondary-color);">
+              {{ currentCharacter?.representation || '爱' }}
+            </div>
+            <div class="details">
+              <p>Unicode: <span>{{ currentCharacter?.codepoint || 'U+7231' }}</span></p>
+              <p>Pinyin: <span>{{ currentCharacter?.pinyin || 'ài' }}</span></p>
+            </div>
+            <div class="buttons-container">
+              <button @click="copyCharacter">Copy</button>
+              <button @click="generateNew">Re-generate</button>
+            </div>
+          </div>
+          <div class="face back-face">
+            <h3>Emoji Mode</h3>
+            <div class="character">{{ currentEmoji?.representation || '♥' }}</div>
+            <div class="details">
+              <p>Codepoint: <span>{{ currentEmoji?.codepoint || 'U+2665' }}</span></p>
+              <p>Name: <span>{{ currentEmoji?.name || 'heart suit' }}</span></p>
+              <p>Category: <span>{{ currentEmoji?.group || 'Activities' }}</span></p>
+            </div>
+            <div class="buttons-container">
+              <button @click="copyEmoji">Copy Emoji</button>
+              <button @click="generateNew">Re-generate</button>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
-
-    <FlipCard ref="flipCard">
-      <template #front>
-        <div class="character" id="mainChar" style="border-bottom: 2px dotted var(--secondary-color);">
-          {{ currentCharacter?.representation || '爱' }}
-        </div>
-        <div id="details">
-          <p>Unicode: <span id="codepoint">{{ currentCharacter?.codepoint || 'U+7231' }}</span></p>
-          <p v-if="!isEmojiMode">Pinyin: <span id="pinyin">{{ currentCharacter?.pinyin || 'ài' }}</span></p>
-        </div>
-        <div class="buttons-container">
-          <button @click="copyCharacter">Copy</button>
-          <button @click="generateNew">Re-generate</button>
-        </div>
-      </template>
-
-      <template #back>
-        <h3>Emoji Mode</h3>
-        <div class="character" id="emojiChar">{{ currentEmoji?.representation || '♥' }}</div>
-        <div id="emojiDetails">
-          <p>Codepoint: <span id="emojiCodepoint">{{ currentEmoji?.codepoint || 'U+2665' }}</span></p>
-          <p>Name: <span id="emojiName">{{ currentEmoji?.name || 'heart suit' }}</span></p>
-          <p>Category: <span id="emojiGroup">{{ currentEmoji?.group || 'Activities' }}</span></p>
-        </div>
-        <div class="buttons-container">
-          <button @click="copyEmoji">Copy Emoji</button>
-          <button @click="generateNew">Re-generate</button>
-        </div>
-      </template>
-    </FlipCard>
 
     <div id="blocks">
       <h2>Examples of used Unicode blocks of this project</h2>
@@ -47,7 +48,6 @@ import type { CharacterInfo } from '~/types'
 
 const { initializeData, generateNew: generateNewCharacter, isEmojiMode, getHanziBlocks } = useCharacterData()
 
-const flipCard = ref<InstanceType<typeof FlipCard> | null>(null)
 const currentCharacter = ref<CharacterInfo | null>(null)
 const currentEmoji = ref<CharacterInfo | null>(null)
 const hanziBlocks = ref<any[]>([])
@@ -92,7 +92,6 @@ const copyEmoji = async () => {
 }
 
 watch(isEmojiMode, () => {
-  flipCard.value?.toggle()
   generateNew()
 })
 </script>
@@ -103,10 +102,6 @@ watch(isEmojiMode, () => {
   flex-direction: column;
   align-items: center;
   width: 100%;
-}
-
-.toggle-container {
-  margin: 20px 0;
 }
 
 .sr-only {
@@ -139,14 +134,70 @@ watch(isEmojiMode, () => {
   background: #27ae60;
 }
 
+/* Card flip - CSS checkbox hack */
+.content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.card-view {
+  margin: 20px auto;
+  perspective: 1000px;
+  width: 400px;
+  min-height: 400px;
+}
+
+.card {
+  position: relative;
+  transform-style: preserve-3d;
+  transition: transform 0.6s;
+  cursor: pointer;
+  width: 100%;
+  min-height: inherit;
+}
+
+/* Flip when checkbox is checked */
+#toggle:checked ~ .content .card {
+  transform: rotateY(180deg);
+}
+
+/* Keep flipped on hover */
+#toggle:checked ~ .content .card-view:hover .card {
+  transform: rotateY(180deg);
+}
+
+.face {
+  position: absolute;
+  width: 100%;
+  min-height: inherit;
+  backface-visibility: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.front-face {
+  background: #fff;
+  transform: rotateY(0deg);
+}
+
+.back-face {
+  background: #f0f0f0;
+  transform: rotateY(180deg);
+}
+
 .character {
   font-size: 96px;
   margin: 16px 0;
   font-family: '仓耳今楷05-W01', sans-serif;
 }
 
-#details,
-#emojiDetails {
+.details {
   margin-top: 16px;
   text-align: left;
   font-size: 16px;
@@ -189,6 +240,11 @@ button:active {
 }
 
 @media (max-width: 800px) {
+  .card-view {
+    width: 300px;
+    min-height: auto;
+  }
+
   .character {
     font-size: 80px;
   }
@@ -197,8 +253,7 @@ button:active {
     flex-direction: column;
   }
 
-  #details,
-  #emojiDetails {
+  .details {
     font-size: 14px;
   }
 }

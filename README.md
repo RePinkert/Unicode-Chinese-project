@@ -1,25 +1,75 @@
-## Unicode Chinese Project
+# Nuxt Minimal Starter
 
-### Project Overview
+Look at the [Nuxt documentation](https://nuxt.com/docs/getting-started/introduction) to learn more.
 
-This project is an interactive Unicode character explorer. It provides a user-friendly interface to browse and search through various character sets and their code points.
+## Setup
 
-### Project Main Content
+Make sure to install dependencies:
 
-| File                       | Description                                                                           |
-| -------------------------- | ------------------------------------------------------------------------------------- |
-| `blocks.html`              | Provides all character sets and their code points with a simple search functionality. |
-| `generator.html`           | Offers two sets of Unicode character displays using a flip card style.                |
-| `css/styles.css`           | CSS file for styling.                                                                 |
-| `data/emojis.csv`          | Emoji dataset used in the project.                                                    |
-| `data/kMandarin_8105.txt`  | Mandarin pinyin dataset used in the project.                                          |
+```bash
+# npm
+npm install
 
-### Data Source Acknowledgment
+# pnpm
+pnpm install
 
-This project utilizes the `emojis.csv` dataset from the GitHub repository [emojis](https://github.com/datasets/emojis/tree/main). The dataset is made available under the **Public Domain Dedication and License (PDDL)**.
+# yarn
+yarn install
 
-Additionally, this project utilizes the `kMandarin_8105.txt` dataset from the GitHub repository [mozillazg/pinyin-data](https://github.com/mozillazg/pinyin-data). The dataset is made available under the terms of the **MIT License**.
+# bun
+bun install
+```
 
-I am also grateful to the Unicode Consortium ([UCD](https://www.unicode.org/Public/UCD/latest/)) for providing the Unicode character database.
+## Development Server
 
-The card flip related CSS code is developed based on the demo by Matthew Nance on [CodePen](https://codepen.io/mn8809/pen/OPmYxy).
+Start the development server on `http://localhost:3000`:
+
+```bash
+# npm
+npm run dev
+
+# pnpm
+pnpm dev
+
+# yarn
+yarn dev
+
+# bun
+bun run dev
+```
+
+## Production
+
+Build the application for production:
+
+```bash
+# npm
+npm run build
+
+# pnpm
+pnpm build
+
+# yarn
+yarn build
+
+# bun
+bun run build
+```
+
+Locally preview production build:
+
+```bash
+# npm
+npm run preview
+
+# pnpm
+pnpm preview
+
+# yarn
+yarn preview
+
+# bun
+bun run preview
+```
+
+Check out the [deployment documentation](https://nuxt.com/docs/getting-started/deployment) for more information.

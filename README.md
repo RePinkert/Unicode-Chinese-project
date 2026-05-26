@@ -1,75 +1,111 @@
-# Nuxt Minimal Starter
+# Unicode Chinese Project (Nuxt 4)
 
-Look at the [Nuxt documentation](https://nuxt.com/docs/getting-started/introduction) to learn more.
+An interactive Unicode character explorer for Chinese characters and Emoji, built with Nuxt 4, Vue 3, and TypeScript.
 
-## Setup
+## Features
 
-Make sure to install dependencies:
+- 🔍 Browse and search Unicode characters (Chinese characters and Emoji)
+- 🎲 Random character generator with flip card animation
+- 📱 Responsive design for all devices
+- ⚡ Fast performance with SSR/SSG support
+- 🎨 Modern component-based architecture
 
-```bash
-# npm
-npm install
+## Tech Stack
 
-# pnpm
-pnpm install
+- **Framework**: Nuxt 4 (Vue 3)
+- **Language**: TypeScript
+- **Styling**: Vue scoped CSS
+- **Build Tool**: Vite (built-in with Nuxt)
 
-# yarn
-yarn install
+## Project Structure
 
-# bun
-bun install
+```
+unicode-chinese-project-nuxt/
+├── app/
+│   ├── components/          # Vue components
+│   │   ├── AppHeader.vue
+│   │   ├── AppFooter.vue
+│   │   ├── FlipCard.vue
+│   │   ├── SearchBar.vue
+│   │   ├── TabButtons.vue
+│   │   └── BlockGrid.vue
+│   ├── composables/         # Vue composables
+│   │   ├── useEmojiData.ts
+│   │   ├── useMandarinData.ts
+│   │   └── useCharacterData.ts
+│   ├── layouts/
+│   │   └── default.vue
+│   ├── pages/
+│   │   ├── index.vue        # Home page (generator)
+│   │   ├── blocks.vue       # Unicode blocks browser
+│   │   ├── about.vue        # Project description
+│   │   └── resources.vue    # Data sources
+│   ├── types/
+│   │   └── index.ts         # TypeScript type definitions
+│   ├── assets/
+│   │   └── css/
+│   │       └── main.css
+│   └── app.vue
+├── public/
+│   ├── data/                # Data files
+│   │   ├── emojis.csv
+│   │   └── kMandarin_8105.txt
+│   └── font/                # Font files
+├── nuxt.config.ts
+├── tsconfig.json
+└── package.json
 ```
 
-## Development Server
+## Getting Started
+
+### Prerequisites
+
+- Node.js 18+
+- npm, pnpm, yarn, or bun
+
+### Installation
+
+```bash
+# Install dependencies
+npm install
+```
+
+### Development
 
 Start the development server on `http://localhost:3000`:
 
 ```bash
-# npm
 npm run dev
-
-# pnpm
-pnpm dev
-
-# yarn
-yarn dev
-
-# bun
-bun run dev
 ```
 
-## Production
+### Production
 
 Build the application for production:
 
 ```bash
-# npm
 npm run build
-
-# pnpm
-pnpm build
-
-# yarn
-yarn build
-
-# bun
-bun run build
 ```
 
-Locally preview production build:
+Preview the production build:
 
 ```bash
-# npm
 npm run preview
-
-# pnpm
-pnpm preview
-
-# yarn
-yarn preview
-
-# bun
-bun run preview
 ```
 
-Check out the [deployment documentation](https://nuxt.com/docs/getting-started/deployment) for more information.
+Generate static site:
+
+```bash
+npm run generate
+```
+
+## Data Sources
+
+This project utilizes the following datasets:
+
+- `emojis.csv` from [datasets/emojis](https://github.com/datasets/emojis/tree/main) - Public Domain Dedication and License (PDDL)
+- `kMandarin_8105.txt` from [mozillazg/pinyin-data](https://github.com/mozillazg/pinyin-data) - MIT License
+- Unicode Character Database from [Unicode Consortium](https://www.unicode.org/Public/UCD/latest/)
+
+## License
+
+MIT License - Copyright © 2025 Xiaopeng Ren

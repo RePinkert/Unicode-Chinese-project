@@ -2,5 +2,5 @@
   command = "npm run generate"
   publish = ".output/public"
 
-[[build.environment]]
+[build.environment]
   NODE_VERSION = "22"

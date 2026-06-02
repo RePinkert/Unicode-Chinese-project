@@ -27,6 +27,12 @@ export default defineNuxtConfig({
     }
   },
 
+  routeRules: {
+    '/sunburst': { ssr: false },
+    '/space3d': { ssr: false },
+    '/rain': { ssr: false },
+  },
+
   css: ['~/assets/css/main.css'],
 
   typescript: {

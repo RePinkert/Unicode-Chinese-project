@@ -45,7 +45,7 @@ export const useEmojiData = () => {
   const getRandomEmoji = (): EmojiItem | null => {
     if (emojis.value.length === 0) return null
     const randomIndex = Math.floor(Math.random() * emojis.value.length)
-    return emojis.value[randomIndex]
+    return emojis.value[randomIndex] ?? null
   }
 
   const searchEmojis = (searchTerm: string): EmojiItem[] => {

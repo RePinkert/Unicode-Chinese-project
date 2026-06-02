@@ -20,10 +20,10 @@ export const useMandarinData = () => {
         .map(line => {
           const parts = line.split(':')
           if (parts.length < 2) return null
-          const codePointPart = parts[0].trim()
+          const codePointPart = parts[0]!.trim()
           const codePoint = parseInt(codePointPart.substring(2), 16)
-          const pinyinPart = parts[1].trim()
-          const pinyin = pinyinPart.split('#')[0].trim()
+          const pinyinPart = parts[1]!.trim()
+          const pinyin = pinyinPart.split('#')[0]!.trim()
           
           return {
             codePoint,
@@ -45,7 +45,7 @@ export const useMandarinData = () => {
   const getRandomHanzi = (): MandarinItem | null => {
     if (mandarinData.value.length === 0) return null
     const randomIndex = Math.floor(Math.random() * mandarinData.value.length)
-    return mandarinData.value[randomIndex]
+    return mandarinData.value[randomIndex] ?? null
   }
 
   const searchHanzi = (searchTerm: string): MandarinItem[] => {

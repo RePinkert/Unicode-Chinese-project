@@ -29,9 +29,9 @@ onMounted(async () => {
 
 const filteredItems = computed(() => {
   if (activeType.value === 'hanzi') {
-    return searchTerm.value ? searchHanzi(searchTerm.value) : mandarinData.value
+    return searchTerm.value ? searchHanzi(searchTerm.value) : [...mandarinData.value]
   } else {
-    return searchTerm.value ? searchEmojis(searchTerm.value) : emojis.value
+    return searchTerm.value ? searchEmojis(searchTerm.value) : [...emojis.value]
   }
 })
 </script>

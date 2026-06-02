@@ -22,4 +22,8 @@
   align-items: center;
   padding: 20px;
 }
+
+.main-content:has(.rain-page) {
+  padding: 0;
+}
 </style>

@@ -18,9 +18,10 @@ export const useCharacterData = () => {
       const emoji = getRandomEmoji()
       if (!emoji) return null
       
-      const codePoints = emoji.codePoint?.split(' ')
-      const formattedCodePoints = [`U+${codePoints[0].toUpperCase()}`]
-        .concat(codePoints.slice(1).map(cp => cp.toUpperCase()))
+      const codePoints = emoji.codePoint?.split(' ') ?? []
+      const formattedCodePoints = codePoints.length > 0
+        ? [`U+${codePoints[0]!.toUpperCase()}`, ...codePoints.slice(1).map(cp => cp.toUpperCase())]
+        : []
       
       return {
         type: 'emoji',

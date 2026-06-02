@@ -4,6 +4,9 @@
       <NuxtLink to="/" class="nav-link">Unicode & Hanzi</NuxtLink>
       <NuxtLink to="/" class="nav-link">Generator</NuxtLink>
       <NuxtLink to="/blocks" class="nav-link">Unicode Blocks</NuxtLink>
+      <NuxtLink to="/sunburst" class="nav-link">Emoji 旭日图</NuxtLink>
+      <NuxtLink to="/space3d" class="nav-link">3D Unicode</NuxtLink>
+      <NuxtLink to="/rain" class="nav-link">字符雨</NuxtLink>
       <NuxtLink to="/resources" class="nav-link">Resources</NuxtLink>
     </div>
     <ColorModeToggle />
